@@ -8,9 +8,9 @@ Este proyecto consiste en crear una app similar a reddit o menéame.
 
 -   Guardar el archivo `.env.example` como `.env` y cubrir los datos necesarios.
 
--   Ejecutar `npm run initDB` para crear las tablas necesarias en la base de datos anteriormente creada.
+-   Ejecutar `npm run initDB` para crear las tablas necesarias en la base de datos.
 
--   Ejecutar `npm run dev` o `npm start` para lanzar el servidor.
+-   Ejecutar `npm run dev` ejecutar el servidor.
 
 ## Entidades
 
