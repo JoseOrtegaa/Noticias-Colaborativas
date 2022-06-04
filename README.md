@@ -1,4 +1,4 @@
-## Web de Noticias colaborativas.
+## Web de Noticias colaborativas
 
 Este proyecto consiste en crear una app similar a reddit o menéame.
 
@@ -58,4 +58,4 @@ Usuarios Registrados:
 
 ## BONUS POINT
 
--   POST [/edit/user/:idUser]Gestión del perfil de usuario (Nombre, Email, Biografía, Foto
+-   POST [/edit/user/:idUser]Gestión del perfil de usuario (Nombre, Email, Biografía, Foto, …
