@@ -44,14 +44,14 @@ Usuarios Anonimos:
     · filtradas por:
     · Tema ** req.query **
 
--   POST [/login] - Login
+-   POST [/login] - Login **_ LISTO _**
 -   POST [/user] - Registro: Nombre, Email, Biografia, Foto **_ LISTO _**
 
 Usuarios Registrados:
 
 ## Lo mismo que los anonimos
 
--   POST [/] - Publicar una nueva noticia: Titulo, Foto (opcional), Entradilla, Texto de la noticia, Tema ## (necesita cabecera con token)
+-   POST [/] - Publicar una nueva noticia: Titulo, Foto (opcional), Entradilla, Texto de la noticia, Tema ## (necesita cabecera con token) **_ LISTO _**
 -   POST [/notice/edit/:idNoticia]Editar una noticia publicada por el mismo usuario ## (necesita cabecera con token) ##
 -   DELETE [/notice/:idNotice] Borrar una noticia publicada por el usuario ## (necesita cabecera con token) ##
 -   POST [/notice/vote] Votar positivamente o negativamente otras noticias

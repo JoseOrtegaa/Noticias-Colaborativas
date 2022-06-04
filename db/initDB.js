@@ -36,8 +36,8 @@ async function main() {
                 idUser INTEGER NOT NULL,
                 FOREIGN KEY (idUser) REFERENCES users(id),
                 title VARCHAR(20) NOT NULL,
-                intro VARCHAR(50) NOT NULL,
-                notice VARCHAR(150) NOT NULL,
+                intro VARCHAR(50) ,
+                text VARCHAR(150) NOT NULL,
                 image VARCHAR(100),
                 theme VARCHAR(100) NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP

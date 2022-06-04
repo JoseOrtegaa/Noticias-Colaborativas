@@ -23,22 +23,32 @@ app.use(fileUpload());
  * #################
  */
 
+const userAuth = require('./middlewares/userAuth');
+
 /**
  * ########################
  * ## Endpoints Usuarios ##
  * ########################
  */
 
-const newUser = require('./controllers/users/newUser');
+const { newUser, loginUser } = require('./controllers/users');
 
 //Registro de un nuevo usuario
 app.post('/user', newUser);
+
+//Login de usuario
+app.post('/login', loginUser);
 
 /**
  * ######################
  * ## Endpoints Notices ##
  * ######################
  */
+
+const newNotice = require('./controllers/notices');
+
+//Agregar una nueva noticia
+app.post('/', userAuth, newNotice);
 
 /**
  * ######################
