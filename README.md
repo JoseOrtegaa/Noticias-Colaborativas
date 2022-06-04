@@ -58,4 +58,4 @@ Usuarios Registrados:
 
 ## BONUS POINT
 
--   POST [/edit/user/:idUser]Gestión del perfil de usuario (Nombre, Email, Biografía, Foto, …
+-   POST [/edit/user/:idUser]Gestión del perfil de usuario (Nombre, Email, Biografía, Foto
