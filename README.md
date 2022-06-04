@@ -6,7 +6,7 @@ Este proyecto consiste en crear una app similar a reddit o menéame.
 
 -   Crear una base de datos vacía en una instancia de MySQL local.
 
--   Guardar el archivo `.env.example` como `.env` y cubrir los datos necesarios.
+-   Guardar el archivo `.env` y cubrir los datos necesarios.
 
 -   Ejecutar `npm run initDB` para crear las tablas necesarias en la base de datos anteriormente creada.
 
