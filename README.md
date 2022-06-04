@@ -1,4 +1,4 @@
-## Web de Noticias colaborativas
+## Web de Noticias colaborativas.
 
 Este proyecto consiste en crear una app similar a reddit o menéame.
 
