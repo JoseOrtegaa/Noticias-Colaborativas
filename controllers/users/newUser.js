@@ -25,14 +25,15 @@ const newUser = async (req, res, next) => {
             // Creamos el directorio si aun no existe
             await createPath(uploadsDir);
 
-            // Procesamos la imagen y la convertimos en un objeti de tipo "Sharp".
+            // Procesamos la imagen y la convertimos en un objeto de tipo "Sharp".
             const sharpImg = sharp(req.files.image.data);
 
             // Le asignamos un valor especifico a la imagen
             sharpImg.resize(500);
 
             // Nombre de la imagen
-            imgName = `${nanoid(24)}.jpg`;
+            imgName = `${nanoid(10)}.jpg`;
+
             // Ruta absoluta de imagen
             const imgPath = path.join(uploadsDir, imgName);
 
@@ -40,7 +41,7 @@ const newUser = async (req, res, next) => {
             await sharpImg.toFile(imgPath);
         }
 
-        //Creamos u nusuario en la base de datos y obtenemos el id
+        //Creamos un usuario en la base de datos y obtenemos el id
         const idUser = await insertUserQuery(
             name,
             email,

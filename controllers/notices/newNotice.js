@@ -29,7 +29,7 @@ const newNotice = async (req, res, next) => {
         //Si la imagen exsite la guardamos
         if (req.files && req.files.image) {
             // Creamos una ruta absoluta al directorio de descargas.
-            const uploadsDir = path.join(__dirname, '../../uploads');
+            const uploadsDir = path.join(__dirname, '../../uploadsNotices');
 
             // Creamos el directorio si aun no existe
             await createPath(uploadsDir);
@@ -41,7 +41,7 @@ const newNotice = async (req, res, next) => {
             sharpImg.resize(500);
 
             // Nombre de la imagen
-            imgName = `${nanoid(24)}.jpg`;
+            imgName = `${nanoid(10)}.jpg`;
             // Ruta absoluta de imagen
             const imgPath = path.join(uploadsDir, imgName);
 
