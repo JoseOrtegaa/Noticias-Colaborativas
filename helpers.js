@@ -1,4 +1,5 @@
 const fs = require('fs/promises');
+const path = require('path');
 
 const generateError = (message, status) => {
     const error = new Error(message);
@@ -16,7 +17,20 @@ const createPath = async (path) => {
     }
 };
 
+const deleteImg = async (image) => {
+    try {
+        // Creamos la ruta a la imagen
+        const imgPath = path.join(__dirname, 'uploadsNotices', image);
+
+        // Eliminamos la imagen
+        await fs.unlink(imgPath);
+    } catch {
+        throw new Error('Error al eliminar la imagen');
+    }
+};
+
 module.exports = {
     generateError,
     createPath,
+    deleteImg,
 };

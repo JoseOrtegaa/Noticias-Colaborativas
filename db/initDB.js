@@ -10,6 +10,7 @@ async function main() {
 
         console.log('Borrando tablas existentes...');
 
+        await connection.query('DROP TABLE IF EXISTS likes');
         await connection.query('DROP TABLE IF EXISTS notices');
         await connection.query('DROP TABLE IF EXISTS likes');
         await connection.query('DROP TABLE IF EXISTS users');
@@ -45,16 +46,6 @@ async function main() {
         `);
 
         console.log('notices creada');
-
-        /*
-        await connection.query(`
-            CREATE TABLE likes(
-            valoration 
-            idUsers 
-            idNotice
-            )
-        `);ç
-        */
     } catch (err) {
         console.log(err);
     } finally {

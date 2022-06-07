@@ -45,10 +45,20 @@ app.post('/login', loginUser);
  * ######################
  */
 
-const newNotice = require('./controllers/notices');
+const {
+    newNotice,
+    editNotice,
+    deleteNotice,
+} = require('./controllers/notices');
 
 //Agregar una nueva noticia
 app.post('/', userAuth, newNotice);
+
+//Agregar una nueva noticia
+app.post('/edit/:idNotice', userAuth, editNotice);
+
+//Eliminar noticia
+app.delete('/notice/:idNotice', userAuth, deleteNotice);
 
 /**
  * ######################
