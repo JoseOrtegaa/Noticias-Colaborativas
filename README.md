@@ -37,7 +37,7 @@ Este proyecto consiste en crear una app similar a reddit o menéame.
 
 ## ENDPOINTS
 
-Usuarios Anonimos:
+## Usuarios Anonimos:
 
 -   GET [/] - Visualizar la lista de las ultimas noticias del dia ordenada por valoracion
 -   GET [/tema:Nombre_tema] - Visualizar noticias de dias anteriores:
