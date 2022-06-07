@@ -52,8 +52,8 @@ Usuarios Registrados:
 ## Lo mismo que los anonimos
 
 -   POST [/] - Publicar una nueva noticia: Titulo, Foto (opcional), Entradilla, Texto de la noticia, Tema ## (necesita cabecera con token) **_ LISTO _**
--   POST [/edit/:idNotice]Editar una noticia publicada por el mismo usuario ## (necesita cabecera con token) ##
--   DELETE [/notice/:idNotice] Borrar una noticia publicada por el usuario ## (necesita cabecera con token) ##
+-   POST [/edit/:idNotice]Editar una noticia publicada por el mismo usuario ## (necesita cabecera con token) ## **_ LISTO _**
+-   DELETE [/notice/:idNotice] Borrar una noticia publicada por el usuario ## (necesita cabecera con token) ## **_ LISTO _**
 -   POST [/notice/vote] Votar positivamente o negativamente otras noticias ## (necesita cabecera con token) ##
 
 ## BONUS POINT
