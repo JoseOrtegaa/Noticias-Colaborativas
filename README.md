@@ -47,7 +47,7 @@ Usuarios Anonimos:
 -   POST [/login] - Login **_ LISTO _**
 -   POST [/user] - Registro: Nombre, Email, Biografia, Foto **_ LISTO _**
 
-Usuarios Registrados:
+## Usuarios Registrados:
 
 ## Lo mismo que los anonimos
 
