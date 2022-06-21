@@ -4,13 +4,13 @@ const mysql = require('mysql2/promise');
 
 const { MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB } = process.env;
 
-// Pool de conexiones
+// Pool de conexiones.
 let pool;
 
-// Funcion que retorna una conexion libre
+// Funcion que retorna una conexion libre.
 const getConnection = async () => {
     try {
-        //Si no hay un grupo de conexiones lo creamos
+        // Si no hay un grupo de conexiones lo creamos.
         if (!pool) {
             pool = mysql.createPool({
                 connectionLimit: 10,
@@ -22,7 +22,7 @@ const getConnection = async () => {
             });
         }
 
-        //Retornamos una conexion libre
+        // Retornamos una conexion libre.
         return await pool.getConnection();
     } catch {
         throw new Error(
@@ -31,5 +31,5 @@ const getConnection = async () => {
     }
 };
 
-//Exportamos la funcion
+// Exportamos la funcion.
 module.exports = getConnection;

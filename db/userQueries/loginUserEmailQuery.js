@@ -8,19 +8,19 @@ const loginUserEmail = async (email) => {
     try {
         connection = await getConnection();
 
-        //Buscamos en la base de datos un usuario con ese Email
+        // Buscamos en la base de datos un usuario con ese Email.
         const [users] = await connection.query(
             `SELECT id, password FROM users WHERE email = ?`,
             [email]
         );
 
-        //Si se cumple esta condicion quiere decir que no existe
-        //Ningun usuario con ese Email
+        // Si se cumple esta condicion quiere decir que no existe
+        // Ningun usuario con ese Email.
         if (users.length < 1) {
             throw generateError('No hay usuario regustrado con ese Email', 404);
         }
 
-        //Retornamos el usuario
+        // Retornamos el usuario.
         return users[0];
     } finally {
         if (connection) connection.release();

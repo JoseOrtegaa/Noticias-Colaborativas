@@ -13,7 +13,7 @@ const inserUserQuery = async (
     try {
         connection = await getConnection();
 
-        //Creamos la noticia
+        // Creamos la noticia.
         await connection.query(
             `INSERT INTO notices (idUser, title, intro, text, image, theme) 
             VALUES (?,?,?,?,?,?)`,

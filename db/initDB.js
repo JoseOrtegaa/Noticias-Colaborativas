@@ -1,11 +1,11 @@
 const getConnection = require('./getConnections');
 
 async function main() {
-    //Variable que almacenará una conexión libre de la base de datos
+    // Variable que almacenará una conexión libre de la base de datos.
     let connection;
 
     try {
-        //Obtenemos una conexion libre.
+        // Obtenemos una conexion libre.
         connection = await getConnection();
 
         console.log('Borrando tablas existentes...');
@@ -17,6 +17,7 @@ async function main() {
 
         console.log('Creandoo tablas...');
 
+        // Creando tabla de usuarios.
         await connection.query(`
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -31,6 +32,7 @@ async function main() {
 
         console.log('users creada');
 
+        // Creando tabla de noticias.
         await connection.query(`
             CREATE TABLE notices(
                 id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -45,14 +47,29 @@ async function main() {
             ) 
         `);
 
-        console.log('notices creada');
+        // Creamos la tabla de likes.
+        await connection.query(`
+            CREATE TABLE likes(
+                id INTEGER PRIMARY KEY AUTO_INCREMENT,
+                idNotice INTEGER NOT NULL,
+                FOREIGN KEY (idNotice) REFERENCES notices(id),
+                idUser INTEGER NOT NULL,
+                FOREIGN KEY (idUser) REFERENCES users(id),
+                vote BOOLEAN NOT NULL,
+                like BOOLEAN,
+                dislike BOOLEAN,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        console.log('likes creada');
     } catch (err) {
         console.log(err);
     } finally {
-        //Si existe una conexion libre la liberamos.
+        // Si no existe una conexion libre la liberamos.
         if (connection) connection.release();
 
-        //Cerramos el proceso actual
+        // Cerramos el proceso actual.
         process.exit();
     }
 }

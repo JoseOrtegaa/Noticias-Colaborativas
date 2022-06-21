@@ -6,7 +6,7 @@ const editNoticeQuery = async (idNotice, title, intro, text, image, theme) => {
     try {
         connection = await getConnection();
 
-        //Actualizamos la Noticia
+        // Actualizamos la Noticia.
         await connection.query(
             `UPDATE notices
              SET title = '${title}', intro = '${intro}', text = '${text}', image = '${image}', theme = '${theme}'

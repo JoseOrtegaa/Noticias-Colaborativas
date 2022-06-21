@@ -8,7 +8,7 @@ const morgan = require('morgan');
 
 const app = express();
 
-//Logger morgan
+// Logger morgan.
 app.use(morgan('dev'));
 
 // Deserializamos un body con formato "raw".
@@ -33,10 +33,10 @@ const userAuth = require('./middlewares/userAuth');
 
 const { newUser, loginUser } = require('./controllers/users');
 
-//Registro de un nuevo usuario
+// Registro de un nuevo usuario.
 app.post('/user', newUser);
 
-//Login de usuario
+// Login de usuario.
 app.post('/login', loginUser);
 
 /**
@@ -49,16 +49,34 @@ const {
     newNotice,
     editNotice,
     deleteNotice,
+    likes,
+    listNotices,
+    getNotice,
 } = require('./controllers/notices');
 
-//Agregar una nueva noticia
-app.post('/', userAuth, newNotice);
+// Agregar una nueva noticia.
+app.post('/notice', userAuth, newNotice);
 
-//Agregar una nueva noticia
-app.post('/edit/:idNotice', userAuth, editNotice);
+// Editar una nueva noticia.
+app.put('/notice/:idNotice/edit', userAuth, editNotice);
 
-//Eliminar noticia
+// Eliminar noticia.
 app.delete('/notice/:idNotice', userAuth, deleteNotice);
+
+// Filtramos la noticias por theme.
+app.get('/notice/:tema', listNotices);
+
+// Obtenemos una noticia por id.
+app.get('/notice/:idNotice', getNotice);
+
+/**
+ * ######################
+ * ## Endpoints likes ##
+ * ######################
+ */
+
+// Dar like a una noticia.
+app.post('/notice/:idNotice/like', userAuth, likes);
 
 /**
  * ######################

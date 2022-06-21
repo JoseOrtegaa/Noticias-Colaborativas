@@ -5,7 +5,7 @@ const deleteNoticeQuery = async (idNotice) => {
     try {
         connection = await getConnection();
 
-        //Eliminamos la noticia
+        // Eliminamos la noticia.
         await connection.query(`DELETE FROM notices WHERE id = ?`, [idNotice]);
     } finally {
         if (connection) connection.release();

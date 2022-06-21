@@ -39,10 +39,9 @@ Este proyecto consiste en crear una app similar a reddit o menéame.
 
 ## Usuarios Anonimos:
 
--   GET [/] - Visualizar la lista de las ultimas noticias del dia ordenada por valoracion
--   GET [/tema:Nombre_tema] - Visualizar noticias de dias anteriores:
-    · filtradas por:
-    · Tema ** req.query **
+-   GET [/] - Visualizar la lista de las ultimas noticias del dia ordenada por valoracion **_ LISTO _**
+-   GET [/notice/:tema] - Visualizar noticias de dias anteriores:
+    · filtradas por: Tema **_ LISTO _**
 
 -   POST [/login] - Login **_ LISTO _**
 -   POST [/user] - Registro: Nombre, Email, Biografia, Foto **_ LISTO _**
@@ -52,9 +51,9 @@ Este proyecto consiste en crear una app similar a reddit o menéame.
 **_ Lo mismo que los anonimos _**
 
 -   POST [/] - Publicar una nueva noticia: Titulo, Foto (opcional), Entradilla, Texto de la noticia, Tema ## (necesita cabecera con token) **_ LISTO _**
--   POST [/edit/:idNotice]Editar una noticia publicada por el mismo usuario ## (necesita cabecera con token) ## **_ LISTO _**
+-   PUT [/notice/:idNotice/edit]Editar una noticia publicada por el mismo usuario ## (necesita cabecera con token) ## **_ LISTO _**
 -   DELETE [/notice/:idNotice] Borrar una noticia publicada por el usuario ## (necesita cabecera con token) ## **_ LISTO _**
--   POST [/notice/vote] Votar positivamente o negativamente otras noticias ## (necesita cabecera con token) ##
+-   POST [/notice/:idNotice/like] Votar positivamente o negativamente otras noticias ## (necesita cabecera con token) ##
 
 ## BONUS POINT
 

@@ -12,17 +12,17 @@ const createPath = async (path) => {
         // Accedemos al directorio.
         await fs.access(path);
     } catch {
-        // Si no logramos acceder, se crea la carpeta directamente
+        // Si no logramos acceder, se crea la carpeta directamente.
         await fs.mkdir(path);
     }
 };
 
 const deleteImg = async (image) => {
     try {
-        // Creamos la ruta a la imagen
+        // Creamos la ruta a la imagen.
         const imgPath = path.join(__dirname, 'uploadsNotices', image);
 
-        // Eliminamos la imagen
+        // Eliminamos la imagen.
         await fs.unlink(imgPath);
     } catch {
         throw new Error('Error al eliminar la imagen');

@@ -8,17 +8,24 @@ const selectNotice = async (idNotice) => {
     try {
         connection = await getConnection();
 
-        //Actualizamos la Noticia
-        const [notice] = await connection.query(
-            `SELECT idUser, title, intro, text, image, theme FROM notices WHERE id = ?`,
+        // Actualizamos la Noticia.
+        const [notices] = await connection.query(
+            `
+                SELECT N.id, N.idUser, N.title, N.intro, N.text, N.image, N.theme, N.createdAt, SUM(IFNULL(L.vote = 1, 0)) AS likes, SUM(IFNULL(L.vote = 0, 0)) AS dislikes 
+                FROM notices N
+                LEFT JOIN likes L
+                ON (N.id = L.idNotice)
+                WHERE N.id = ?
+                GROUP BY N.id
+                `,
             [idNotice]
         );
 
-        if (notice.length < 1) {
-            throw generateError('Usuario no encontrado', 404);
+        if (notices.length < 1) {
+            throw generateError('Esta noticia no existe', 404);
         }
 
-        return notice;
+        return notices[0];
     } finally {
         if (connection) connection.release();
     }
