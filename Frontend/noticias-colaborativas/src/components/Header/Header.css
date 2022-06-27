@@ -1,0 +1,91 @@
+div.App > header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 5rem;
+  background-color: rgb(255, 255, 255);
+  border-bottom: 1px solid rgba(255, 68, 0, 0.381);
+}
+
+div.App > header > div > h1 {
+  margin: 1rem;
+  color: var(--color-orange-primary);
+  text-shadow: 1px 1px 1px rgba(67, 67, 67, 0.406);
+}
+
+div.App > header > .Buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 70%;
+  gap: 0.5rem;
+  margin-right: 0.5rem;
+  height: 100%;
+}
+
+.BtnNotice {
+  background-color: rgba(4, 100, 255, 0.842);
+  height: 2rem;
+  width: 2rem;
+  border-radius: 100%;
+  text-align: center;
+}
+
+div.App > header > div > .BtnNotice a {
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+
+div.App > header > div > .BtnLogout {
+  text-align: center;
+  width: 4rem;
+  font-size: 1rem;
+  border: 1px solid red;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 0.2rem;
+}
+
+div.App > header > div > .BtnLogout > p {
+  color: red;
+}
+
+div.App > header > div > .BtnSignup {
+  text-align: center;
+  width: 6rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-btn-header);
+  background-color: var(--color-btn-header);
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 0.2rem;
+}
+
+div.App > header > div > .BtnSignup a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+div.App > header > div > .BtnLogin {
+  text-align: center;
+  width: 7rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-btn-header);
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 0.2rem;
+}
+
+div.App > header > div > .BtnLogin a {
+  color: var(--color-btn-header);
+  text-decoration: none;
+}

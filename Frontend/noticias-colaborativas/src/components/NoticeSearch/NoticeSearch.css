@@ -1,0 +1,133 @@
+main.NoticeSearch > form {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+main.NoticeSearch > form > input {
+  width: 40%;
+  height: 2rem;
+  font-size: 1.1rem;
+  border: 1px solid var(--color-orange-primary);
+  padding: 0.2rem;
+  border-right: none;
+}
+
+main.NoticeSearch > form > button {
+  border: 1px solid var(--color-orange-primary);
+  padding: 0.2rem;
+  background-color: rgba(255, 68, 0, 0.626);
+}
+
+.NoticeList {
+  text-align: center;
+  max-width: 75%;
+  margin: 1rem auto;
+}
+
+.NoticeList > li {
+  list-style: none;
+  border: 1px solid rgba(255, 68, 0, 0.614);
+  box-shadow: 2px 2px 2px rgb(187, 187, 185);
+  border-radius: 5px;
+  margin: 1.2rem 1rem;
+}
+
+.NoticeList > li > .HeaderNotice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2rem;
+  background-color: rgba(255, 68, 0, 0.614);
+}
+
+.NoticeList > li > .HeaderNotice p {
+  margin: 0.2rem;
+  color: white;
+  text-shadow: 1px 1px 1px rgb(107, 107, 107);
+}
+
+.NoticeList > li > .HeaderNotice time {
+  margin: 0.2rem;
+}
+
+.NoticeList > li > .BodyNotice > div.UpNotice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(242, 238, 130, 0.769);
+  height: 2rem;
+}
+
+.NoticeList > li > .BodyNotice > div.UpNotice p {
+  margin: 0.2rem;
+  color: rgb(0, 0, 0);
+}
+
+.NoticeList > li > .BodyNotice > div.DownNotice {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  height: 100%;
+}
+
+.NoticeList > li > .BodyNotice > div.DownNotice p {
+  margin: 0.2rem;
+  color: rgb(29, 28, 28);
+}
+
+.NoticeList > li > .BodyNotice > div.DownNotice img {
+  width: 100%;
+}
+
+.NoticeList > li > footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 68, 0, 0.614);
+}
+
+.NoticeList > li > footer > div:first-child {
+  display: flex;
+  margin: 0.1rem;
+  gap: 0.2rem;
+  cursor: pointer;
+}
+
+.NoticeList > li > footer > div:first-child > p {
+  margin-right: 0.2rem;
+  margin-left: 0.5rem;
+}
+
+.NoticeList > li > footer > div:first-child > p > button {
+  background-color: transparent;
+  border: none;
+  margin: 0.2rem;
+  padding: 0.2rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  text-shadow: 2px 2px 2px rgb(58, 58, 58);
+}
+
+.NoticeList > li > footer > div:first-child > p > button:active {
+  text-shadow: 0px 0px 0px rgb(58, 58, 58);
+}
+
+.NoticeList > li > footer > div:first-child > p > button.IsActive {
+  border-bottom: 3px solid white;
+}
+
+.NoticeList > li > footer > div:last-child {
+  margin: 0.1rem;
+}
+
+.NoticeList > li > footer > div:last-child > button {
+  margin: 0.2rem;
+  padding: 0.3rem;
+  background-color: var(--color-btn-header);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
