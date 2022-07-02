@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useToken } from '../../TokenContext';
-import { useId } from '../../IdContext';
 
 import './Login.css';
 
 const Login = () => {
   const [token, setToken] = useToken();
-  const [id, setId] = useId();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +13,7 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   // Si ya estamos logueados redireccionamos a la pagina principal.
-  if (token && id) return <Navigate to='/' />;
+  if (token) return <Navigate to='/' />;
 
   // Función que se ejecutara al dar click en Entrar al Formulario.
   const handleSubmit = async (e) => {
@@ -47,7 +45,6 @@ const Login = () => {
         setError(data.message);
       } else {
         setToken(data.data.token);
-        setId(data.data.infTkn.id);
       }
     } catch (error) {
       setError(error.message);
@@ -59,7 +56,7 @@ const Login = () => {
     <main className='Login'>
       <form onSubmit={handleSubmit}>
         <div className='InputForm'>
-          <label htmlFor='email'>Email:</label>
+          <label htmlFor='email'>Email</label>
           <input
             type='email'
             name='email'
@@ -69,7 +66,7 @@ const Login = () => {
         </div>
 
         <div className='InputForm'>
-          <label htmlFor='pass'>Contraseña:</label>
+          <label htmlFor='pass'>Contraseña</label>
           <input
             type='password'
             name='pass'
@@ -78,7 +75,7 @@ const Login = () => {
           />
         </div>
 
-        <button disabled={loading}>Entrar</button>
+        <button disabled={loading}>Ingresar</button>
       </form>
       {error && <p className='Error'>{error}</p>}
     </main>

@@ -1,58 +1,105 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToken } from '../../TokenContext';
-import { useId } from '../../IdContext';
+import { useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import './EditNotice.css';
 
 const EditNotice = () => {
+  const { idNotice } = useParams();
   const [token] = useToken();
-  const [id] = useId();
 
   const [title, setTitle] = useState('');
   const [intro, setIntro] = useState('');
   const [text, setText] = useState('');
   const [theme, setTheme] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [image, setImage] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [sucess, setSucess] = useState(false);
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+
+  // Obtenemos la noticia para mostrar los campos con sus datos.
+  const getNotice = async () => {
+    setRefresh(false);
+    try {
+      // Hacemos la petición a la API.
+      const res = await fetch(`http://localhost:4000/notice/${idNotice}/id`);
+
+      // Obtenemos el objeto.
+      const data = await res.json();
+
+      // En caso de error lo notificamos.
+      if (data.status === 'error') {
+        setError(data.message);
+      } else {
+        // Si no, actualizamos la variable Notice con las noticias actuales.
+        setImage(data.data.notice[0].image);
+        setTitle(data.data.notice[0].title);
+        setIntro(data.data.notice[0].intro);
+        setText(data.data.notice[0].text);
+        setTheme(data.data.notice[0].theme);
+        setRefresh(!refresh);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getNotice();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEdit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
-    let idNotice;
-    //Colocamos el try para hacer el fetch y la peticio Put.
+    //Colocamos el try para hacer el fetch y la petición Put.
     try {
       // Si queremos enviar un body con formato "form/data" es necesario
       // crear un objeto de tipo FormData y "pushear" los elementos.
-      const formData = new FormData();
 
-      // Pusheamos las propiedades con append.
-      formData.append('title', title);
-      formData.append('intro', intro);
-      formData.append('text', text);
-      formData.append('theme', theme);
-      formData.append('image', selectedFile);
+      if (
+        title[0] === ' ' ||
+        intro[0] === ' ' ||
+        text[0] === ' ' ||
+        theme === ' '
+      ) {
+        window.alert('No se permiten solo espacios en blanco.');
+      } else {
+        const formData = new FormData();
 
-      const li = e.target.closest('li');
+        // Pusheamos las propiedades con append.
+        formData.append('title', title);
+        formData.append('intro', intro);
+        formData.append('text', text);
+        formData.append('theme', theme);
+        formData.append('image', selectedFile);
 
-      idNotice = li.getAttribute('data-id');
+        const res = await fetch(
+          `http://localhost:4000/notice/${idNotice}/edit`,
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: token,
+            },
+            body: formData,
+          }
+        );
 
-      const res = await fetch(`http://localhost:4000/notice/${idNotice}/edit`, {
-        method: 'PUT',
-        headers: {
-          Authorization: token,
-        },
-        body: formData,
-      });
+        // Obtenemos el objeto.
+        const data = await res.json();
 
-      // Obtenemos el objeto.
-      const data = await res.json();
-
-      // Si el estatus de Data es error, lo notificamos y enviamos un mensaje, en caso contrario, actualizamos las variables Like y Dislike.
-      if (data.status === 'error') {
-        setError(data.message);
+        // Si el estatus de Data es error, lo notificamos y enviamos un mensaje, en caso contrario, redirigimos al inicio.
+        if (data.status === 'error') {
+          setError(data.message);
+        } else {
+          setSucess(true);
+        }
       }
     } catch (error) {
       setError(error.message);
@@ -61,24 +108,24 @@ const EditNotice = () => {
     }
   };
 
+  // Si se creo satisfactoriamente redirigimos al inicio.
+  if (sucess) return <Navigate to='/' />;
+
   return (
-    <main className='NoticeCreate'>
+    <main className='NoticeEdit'>
       <form onSubmit={handleEdit}>
-        <div className='InputForm'>
-          <label htmlFor='title'>
-            Titulo:<span>*</span>
-          </label>
+        <div>
+          <label htmlFor='title'>Titulo</label>
           <input
             type='text'
             name='title'
-            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
-        <div className='InputForm'>
-          <label htmlFor='intro'>Intro:</label>
+        <div>
+          <label htmlFor='intro'>Intro</label>
           <input
             type='text'
             name='intro'
@@ -87,41 +134,40 @@ const EditNotice = () => {
           />
         </div>
 
-        <div className='InputForm'>
-          <label htmlFor='text'>
-            Texto:<span>*</span>
-          </label>
+        <div>
+          <label htmlFor='text'>Texto</label>
           <input
             type='text'
             name='text'
-            required
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
         </div>
 
-        <div className='InputForm'>
-          <label htmlFor='theme'>
-            Tema:<span>*</span>
-          </label>
+        <div>
+          <label htmlFor='theme'>Tema</label>
           <input
             type='text'
             name='theme'
-            required
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           />
         </div>
 
-        <div>
-          <label htmlFor='image'>Imagen:</label>
+        <div className='DivImageEdit'>
+          {image && (
+            <img
+              src={`http://localhost:4000/${image}`}
+              alt={'Imagen de la noticia'}
+            />
+          )}
           <input
             type='file'
             name='image'
             onChange={(e) => setSelectedFile(e.target.files[0])}
           />
         </div>
-        <button disabled={loading}>Enviar</button>
+        <button disabled={loading}>Editar</button>
       </form>
       {error && <p className='Error'>{error}</p>}
     </main>

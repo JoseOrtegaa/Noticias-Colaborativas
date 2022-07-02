@@ -23,36 +23,41 @@ const NoticeCreate = () => {
     setLoading(true);
 
     try {
-      // Si queremos enviar un body con formato "form/data" es necesario
-      // crear un objeto de tipo FormData y "pushear" los elementos.
-      const formData = new FormData();
-
-      // Pusheamos las propiedades con append.
-      formData.append('title', title);
-      formData.append('intro', intro);
-      formData.append('text', text);
-      formData.append('theme', theme);
-      formData.append('image', selectedFile);
-
-      // Hacemos la petición a la API mediante el Fecth y pasamos la cabecera de Authorization y el Body.
-      const res = await fetch('http://localhost:4000/notice', {
-        method: 'POST',
-        headers: {
-          Authorization: token,
-        },
-        body: formData,
-      });
-
-      // Obtenemos el objeto.
-      const data = await res.json();
-
-      if (data.status === 'error') {
-        setError(data.message);
+      // Evaluamos que el usuario no quiera insertar puros espacios en blancos en campos requeridos.
+      if (title[0] === ' ' || text[0] === ' ' || theme[0] === ' ') {
+        window.alert(
+          'Cualquier campo obligatorio debe empezar con alguna Letra.'
+        );
       } else {
-        setSuccess(true);
+        // Si queremos enviar un body con formato "form/data" es necesario
+        // crear un objeto de tipo FormData y "pushear" los elementos.
+        const formData = new FormData();
+
+        // Pusheamos las propiedades con append.
+        formData.append('title', title);
+        formData.append('intro', intro);
+        formData.append('text', text);
+        formData.append('theme', theme);
+        formData.append('image', selectedFile);
+
+        // Hacemos la petición a la API mediante el Fecth y pasamos la cabecera de Authorization y el Body.
+        const res = await fetch('http://localhost:4000/notice', {
+          method: 'POST',
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        });
+        // Obtenemos el objeto.
+        const data = await res.json();
+
+        if (data.status === 'error') {
+          setError(data.message);
+        } else {
+          setSuccess(true);
+        }
       }
     } catch (error) {
-      console.log(error);
       setError(error.massage);
     } finally {
       setLoading(false);
@@ -65,9 +70,9 @@ const NoticeCreate = () => {
   return (
     <main className='NoticeCreate'>
       <form onSubmit={handleSubmit}>
-        <div className='InputForm'>
+        <div>
           <label htmlFor='title'>
-            Titulo:<span>*</span>
+            Titulo (<span>*</span>)
           </label>
           <input
             type='text'
@@ -78,8 +83,8 @@ const NoticeCreate = () => {
           />
         </div>
 
-        <div className='InputForm'>
-          <label htmlFor='intro'>Intro:</label>
+        <div>
+          <label htmlFor='intro'>Intro</label>
           <input
             type='text'
             name='intro'
@@ -88,9 +93,9 @@ const NoticeCreate = () => {
           />
         </div>
 
-        <div className='InputForm'>
+        <div>
           <label htmlFor='text'>
-            Texto:<span>*</span>
+            Texto (<span>*</span>)
           </label>
           <input
             type='text'
@@ -101,9 +106,9 @@ const NoticeCreate = () => {
           />
         </div>
 
-        <div className='InputForm'>
+        <div>
           <label htmlFor='theme'>
-            Tema:<span>*</span>
+            Tema (<span>*</span>)
           </label>
           <input
             type='text'
@@ -114,15 +119,15 @@ const NoticeCreate = () => {
           />
         </div>
 
-        <div>
-          <label htmlFor='image'>Imagen:</label>
+        <div className='DivImagenCreate'>
+          <label htmlFor='image'>Imagen</label>
           <input
             type='file'
             name='image'
             onChange={(e) => setSelectedFile(e.target.files[0])}
           />
         </div>
-        <button disabled={loading}>Enviar</button>
+        <button disabled={loading}>Publicar</button>
       </form>
       {error && <p className='Error'>{error}</p>}
     </main>

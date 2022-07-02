@@ -1,41 +1,40 @@
 import { NavLink } from 'react-router-dom';
 import { useToken } from '../../TokenContext';
-import { useId } from '../../IdContext';
 
 import './Header.css';
 import IdentityUser from '../IdentityUser/IdentityUser';
 
 const Header = () => {
   const [token, setToken] = useToken();
-  const [id, setId] = useId();
 
+  // Función para deslogear al usuario.
   const Logout = () => {
     setToken(null);
-    setId(null);
   };
 
   return (
     <header>
-      <div>
-        <h1>Rdit</h1>
+      <div className='Title'>
+        <h1>Bubble</h1>
       </div>
 
-      <div>{token && id && <IdentityUser />}</div>
+      {!token && <NavLink to='/'>Inicio</NavLink>}
+      {token && <IdentityUser />}
 
       <div className='Buttons'>
         {!token && (
           <div className='BtnSignup'>
-            <NavLink to='/users'>Registrarse</NavLink>
+            <NavLink to='/users'>Unirse</NavLink>
           </div>
         )}
         {!token && (
           <div className='BtnLogin'>
-            <NavLink to='/login'>Iniciar Sesión</NavLink>
+            <NavLink to='/login'>Ingresar</NavLink>
           </div>
         )}
         {token && (
           <div className='BtnNotice'>
-            <NavLink to='/notice'>+</NavLink>
+            <NavLink to='/notice'>Nuevo</NavLink>
           </div>
         )}
         {token && (

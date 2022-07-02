@@ -7,7 +7,7 @@ const TokenContext = createContext(null);
 export const TokenProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Función para guardar el token en el localstorage, lo guarda en una variable "token"
+  // Función para guardar el token en el localstorage, lo guarda en una variable "token".
   const setTokenInLocalStorage = (newToken) => {
     if (!newToken) {
       localStorage.removeItem('token');

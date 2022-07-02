@@ -13,6 +13,7 @@ const Register = () => {
   const [biography, setBiography] = useState('');
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [create, setCreate] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
@@ -39,14 +40,16 @@ const Register = () => {
         body: formData,
       });
 
-      // Creamos la variable que obtendra el objeto javascript.
+      // Creamos la variable que obtendra el objeto.
       const data = await res.json();
 
-      // Capturamos el error de estatus, si no, cambiamos el valor de Message
+      // Capturamos el error de estatus, si no, cambiamos el valor de Message.
       if (data.status === 'error') {
         setError(data.message);
+        setCreate(false);
       } else {
         setMessage(data.message);
+        setCreate(true);
       }
     } catch (error) {
       setError(error.message);
@@ -55,28 +58,15 @@ const Register = () => {
     }
   };
 
-  // Enviame mensaje de creado con existo con una duracion de 3segundos.
-  useEffect(() => {
-    const successP = document.querySelector('p.Success');
-
-    if (successP) {
-      const t = setTimeout(() => {
-        document.querySelector('p.Success').remove();
-      }, 3000);
-
-      return () => clearTimeout(t);
-    }
-  });
-
   // Si ya estamos logueados redireccionamos al inicio.
   if (token) return <Navigate to='/' />;
 
   return (
     <main className='Register'>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className='InputForm'>
           <label htmlFor='name'>
-            Nombre:<span>*</span>
+            Nombre (<span>*</span>)
           </label>
           <input
             type='text'
@@ -89,7 +79,7 @@ const Register = () => {
 
         <div className='InputForm'>
           <label htmlFor='email'>
-            Email:<span>*</span>
+            Email (<span>*</span>)
           </label>
           <input
             type='email'
@@ -102,7 +92,7 @@ const Register = () => {
 
         <div className='InputForm'>
           <label htmlFor='pass'>
-            Contraseña:<span>*</span>
+            Contraseña (<span>*</span>)
           </label>
           <input
             type='password'
@@ -114,7 +104,7 @@ const Register = () => {
         </div>
 
         <div className='InputForm'>
-          <label htmlFor='biography'>Biografia:</label>
+          <label htmlFor='biography'>Biografia</label>
           <input
             type='text'
             name='biography'
@@ -123,8 +113,8 @@ const Register = () => {
           />
         </div>
 
-        <div>
-          <label htmlFor='image'>Imagen:</label>
+        <div className='DivImageForm'>
+          <label htmlFor='image'>Imagen</label>
           <input
             type='file'
             name='image'
@@ -132,10 +122,12 @@ const Register = () => {
           />
         </div>
 
-        <button disabled={loading}>Registrar</button>
+        <button disabled={loading} onClick={handleSubmit}>
+          Unirme
+        </button>
       </form>
       {error && <p className='Error'>{error}</p>}
-      {message && <p className='Success'>{message}</p>}
+      {message && create && <p className='Success'>{message}</p>}
     </main>
   );
 };

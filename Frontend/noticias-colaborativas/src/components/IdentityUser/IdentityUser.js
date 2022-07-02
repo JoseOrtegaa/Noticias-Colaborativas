@@ -1,45 +1,50 @@
-import { useId } from '../../IdContext';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useToken } from '../../TokenContext';
 
 import './IdentityUser.css';
+
 const IdentityUser = () => {
-  const [id] = useId();
+  const [token] = useToken();
 
-  const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState();
+  const [image, setImage] = useState();
 
-  const Information = async () => {
+  const userData = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/users/${id}`);
+      const res = await fetch('http://localhost:4000/users/profile', {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       // Obtenemos el objeto.
       const data = await res.json();
 
-      setUser(data.data.user[0]);
+      if (data.status === 'ok') {
+        setUsername(data.data.user[0].name);
+        setImage(data.data.user[0].image);
+      }
     } catch (error) {
-      setError(error.message);
+      console.error(error);
     }
   };
 
-  if (user === null) {
-    Information();
-  } else {
-    return (
-      <div className='Identity'>
-        {user.image && (
-          <img
-            className='ImagenIdentity'
-            src={`http://localhost:4000/${user.image}`}
-            alt={`Imagen perfil de ${user.name}`}
-          />
-        )}
+  userData();
 
-        <NavLink to='/'>u/{user.name}</NavLink>
-        {error && <p className='Error'>{error}</p>}
-      </div>
-    );
-  }
+  return (
+    <div className='Identity'>
+      {image && (
+        <img
+          className='ImagenIdentity'
+          src={`http://localhost:4000/${image}`}
+          alt={`Imagen perfil de ${username}`}
+        />
+      )}
+
+      <NavLink to='/'>u/{username}</NavLink>
+    </div>
+  );
 };
 
 export default IdentityUser;

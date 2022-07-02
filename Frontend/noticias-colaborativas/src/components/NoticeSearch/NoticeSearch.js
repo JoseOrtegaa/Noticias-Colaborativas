@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { useToken } from '../../TokenContext';
 import { NavLink } from 'react-router-dom';
-import EditNotice from '../EditNotice/EditNotice';
+import Votes from '../Votes/Votes';
 
 import './NoticeSearch.css';
 
@@ -13,8 +13,6 @@ const SearchNotice = () => {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [notices, setNotices] = useState(null);
-  const [updateLikes, setUpdateLikes] = useState(true);
-  const [updateDislikes, setUpdateDislikes] = useState(false);
   const [error, setError] = useState(null);
 
   // Mediante esta función obtenemos todas las noticias.
@@ -24,17 +22,26 @@ const SearchNotice = () => {
     // Vaciamos el error.
     setError(null);
 
+    // Si hay token nos interesa mandarlo para comprobar las noticias de las que somos dueños.
+    const params = token
+      ? {
+          headers: {
+            Authorization: token,
+          },
+        }
+      : {};
+
     try {
       // Hacemos la petición a la API.
       const res = await fetch(
-        `http://localhost:4000/notice/get?keyword=${keyword}`
+        `http://localhost:4000/notice/get?keyword=${keyword}`,
+        params
       );
-
       // Obtenemos el objeto.
       const data = await res.json();
 
       // En caso de error lo notificamos.
-      if (data.data.status === 'error') {
+      if (data.status === 'error') {
         setError(data.message);
         setNotices(null);
       } else {
@@ -56,80 +63,11 @@ const SearchNotice = () => {
     getNotices();
   };
 
-  // Función encargada de gestionar los likes y dislikes.
-  const handleVote = async (e) => {
-    setLoading(true);
-    setError(null);
-
-    const li = e.target.closest('li');
-
-    const idNotice = li.getAttribute('data-id');
-
-    // Creamos la variable res que depende del click del usuario se ejecutara una u otra petición a la API.
-    let res;
-    try {
-      // Si el usuario pulso el boton Like, se envian los datos necesario para sumar un Like o en su defecto, quitarlo.
-      if (e.target.value === 'true') {
-        setUpdateLikes(true);
-
-        // Hacemos la petición a la API y le enviamos los datos necesarios.
-        res = await fetch(`http://localhost:4000/notice/${idNotice}/like`, {
-          method: 'POST',
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            vote: updateLikes,
-          }),
-        });
-      }
-      // Si el usuario pulso el boton Dislike, se envian los datos necesario para sumar un Dislike o en su defecto, quitarlo.
-      else if (e.target.value === 'false') {
-        setUpdateDislikes(false);
-
-        // Hacemos la petición a la API y le enviamos los datos necesarios.
-        res = await fetch(`http://localhost:4000/notice/${idNotice}/like`, {
-          method: 'POST',
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            vote: updateDislikes,
-          }),
-        });
-      }
-
-      // Obtenemos el objeto.
-      const data = await res.json();
-
-      // Si el estatus de Data es error, lo notificamos y enviamos un mensaje, en caso contrario, actualizamos.
-      if (data.status === 'error') {
-        setError(data.message);
-      } else {
-        setRefresh(!refresh);
-        getNotices();
-      }
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Función para eliminar Noticia SOLO si es la misma persona que la creo.
-  const handleDelete = async (e) => {
+  const handleDelete = async (idNotice) => {
     setLoading(true);
     setError(null);
-
-    // Si el usuario pulso el boton, le preguntamos si desea eliminar la noticia.
-    if (window.confirm('¿Eliminar Noticia?')) {
-      const li = e.target.closest('li');
-
-      const idNotice = li.getAttribute('data-id');
-
-      //Colocamos el try para hacer el fetch y la peticio Delete.
+    if (window.confirm('¿Deseas la noticia?')) {
       try {
         const res = await fetch(`http://localhost:4000/notice/${idNotice}`, {
           method: 'DELETE',
@@ -141,7 +79,7 @@ const SearchNotice = () => {
         // Obtenemos el objeto.
         const data = await res.json();
 
-        // Si el estatus de Data es error, lo notificamos y enviamos un mensaje, en caso contrario, actualizamos las variables Like y Dislike.
+        // Si el estatus de Data es error, lo notificamos y enviamos un mensaje, en caso contrario, actualizamos la noticia.
         if (data.status === 'error') {
           setError(data.message);
         } else {
@@ -155,12 +93,11 @@ const SearchNotice = () => {
       }
     }
   };
-
   // Con este "useEffect" hacemos que se muestren las noticias apenas se cargue la pagina.
   useEffect(() => {
     getNotices();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh]);
+  }, []);
 
   return (
     <main className='NoticeSearch'>
@@ -207,24 +144,27 @@ const SearchNotice = () => {
                 </div>
 
                 <footer>
+                  {
+                    <Votes
+                      idNotice={notice.id}
+                      likedByMe={notice.likedByMe}
+                      dislikedByMe={notice.dislikedByMe}
+                    />
+                  }
                   <div>
-                    <p>
-                      {notice.likes}
-                      <button value={true} onClick={token && handleVote}>
-                        👍
+                    {token && notice.owner === 1 && (
+                      <button className='BtnEdit'>
+                        <NavLink to={`notice/${notice.id}/edit`}>
+                          Editar
+                        </NavLink>
                       </button>
-                    </p>
-                    <p>
-                      {notice.dislikes}
-                      <button value={false} onClick={token && handleVote}>
-                        👎
-                      </button>
-                    </p>
-                  </div>
-                  <div>
-                    {token && <NavLink to={`/notice/edit`}>Editar</NavLink>}
+                    )}
 
-                    {token && <button onClick={handleDelete}>Eliminar</button>}
+                    {token && notice.owner === 1 && (
+                      <button onClick={() => handleDelete(notice.id)}>
+                        Eliminar
+                      </button>
+                    )}
                   </div>
                 </footer>
               </li>
