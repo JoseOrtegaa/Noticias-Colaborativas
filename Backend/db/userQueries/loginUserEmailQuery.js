@@ -18,7 +18,7 @@ const loginUserEmail = async (email) => {
         // Ningun usuario con ese Email.
         if (users.length < 1) {
             throw generateError(
-                'No hay usuario registrado con ese Email.',
+                'No hay usuario registrado con este Email.',
                 404
             );
         }

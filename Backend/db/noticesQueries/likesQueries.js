@@ -30,7 +30,7 @@ const likesQueries = async (idNotice, idUser, vote) => {
                 [idNotice, idUser]
             );
         }
-        // Si el usuario ya a dado dislike y vuelve a dar like, se elimina el dislike.
+        // Si el usuario ya a dado dislike y vuelve a dar dislike, se elimina el dislike.
         else if (!likes[0].vote && !vote) {
             await connection.query(
                 `DELETE FROM likes WHERE idNotice = ? AND idUser = ?`,

@@ -33,6 +33,7 @@ app.use(express.static('uploads'));
 
 const userAuth = require('./middlewares/userAuth');
 const noticeExists = require('./middlewares/noticeExists');
+const userAuthInformation = require('./middlewares/userAuthInformation');
 
 /**
  * ########################
@@ -46,10 +47,10 @@ const { newUser, loginUser, getUser } = require('./controllers/users');
 app.post('/users', newUser);
 
 // Login de usuario.
-app.post('/login', loginUser);
+app.post('/login', userAuthInformation, loginUser);
 
-// Obtener usuario por id.
-app.get('/users/:idUser', getUser);
+// Perfil del usuario con token.
+app.get('/users/profile', userAuth, getUser);
 
 /**
  * ######################
@@ -76,10 +77,10 @@ app.put('/notice/:idNotice/edit', userAuth, editNotice);
 app.delete('/notice/:idNotice', userAuth, deleteNotice);
 
 // Filtramos la noticias por theme.
-app.get('/notice/:tema', listNotices);
+app.get('/notice/:tema', userAuthInformation, listNotices);
 
 // Obtenemos una noticia por id.
-app.get('/notice/:idNotice', getNotice);
+app.get('/notice/:idNotice/id', getNotice);
 
 /**
  * ######################

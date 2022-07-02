@@ -10,22 +10,23 @@ const editNotice = async (req, res, next) => {
     try {
         // Obtenemos los todos los datos.
         const { idNotice } = req.params;
+
         let { title, intro, text, theme } = req.body;
+
+        // Llamamos a la funcion para obtener la noticia mediante el parametro idNotice.
+        const notice = await selectNoticeByIdQuery(idNotice);
 
         // Verificamos que exista alguna, en caso contrario enviamos mensaje
         // Que no edito nada.
         if (!title && !intro && !text && !theme) {
             throw generateError(
-                `No has editado ningun campo de la noticia`,
+                `No has editado ningun campo de la noticia.`,
                 400
             );
         }
 
-        // Llamamos a la funcion para obtener la noticia mediante el parametro idNotice.
-        const notice = await selectNoticeByIdQuery(idNotice);
-
         // Verificamos que la persona que quiere editar la noticia sea la misma que lo creo.
-        if (req.idUser !== notice.idUser) {
+        if (req.idUser !== notice[0].idUser) {
             throw generateError(
                 'No puedes editar una noticia de otra persona',
                 401
@@ -34,16 +35,13 @@ const editNotice = async (req, res, next) => {
 
         // Los datos que no nos envien, siguen igual.
         if (!title) {
-            title = notice.title;
-        }
-        if (!intro) {
-            intro = notice.intro;
+            title = notice[0].title;
         }
         if (!text) {
-            text = notice.text;
+            text = notice[0].text;
         }
         if (!theme) {
-            theme = notice.theme;
+            theme = notice[0].theme;
         }
 
         // Si viene una imagen la procesamos.
@@ -69,7 +67,7 @@ const editNotice = async (req, res, next) => {
             // Guardamos la imagen en el directorio de descargas.
             await sharpImg.toFile(imgPath);
         } else {
-            imgName = notice.image;
+            imgName = notice[0].image;
         }
 
         // Editamos la noticia.

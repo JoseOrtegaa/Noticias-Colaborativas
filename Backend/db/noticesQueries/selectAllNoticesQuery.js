@@ -1,9 +1,8 @@
 // Conectamos con la base de datos y requerimos los modulos necesarios.
-const { generateError } = require('../../helpers');
 const getConnection = require('../getConnections');
 
 // Creamos la funcion que selecciona los elementos a filtrar.
-const selectAllNoticesQuery = async (keyword) => {
+const selectAllNoticesQuery = async (idUser, keyword) => {
     let connection;
 
     try {
@@ -17,7 +16,7 @@ const selectAllNoticesQuery = async (keyword) => {
         if (keyword) {
             [notices] = await connection.query(
                 `
-                SELECT  N.id, N.text, N.title, U.name, N.intro, N.theme, N.image, N.createdAt, SUM(IFNULL(L.vote = 1, 0)) AS likes, SUM(IFNULL(L.vote = 0, 0)) AS dislikes 
+                SELECT  N.id,  N.idUser, N.text, N.title, U.name, N.intro, N.theme, N.image, N.createdAt, SUM(IFNULL(L.vote = 1, 0)) AS likes, SUM(IFNULL(L.vote = 0, 0)) AS dislikes,  N.idUser = ? AS owner,BIT_OR(L.idUser = ? AND L.vote = 1) AS likedByMe , BIT_OR(L.idUser = ? AND L.vote = 0) AS dislikedByMe 
                 FROM notices N
                 LEFT JOIN likes L
                 ON (N.id = L.idNotice)
@@ -27,12 +26,12 @@ const selectAllNoticesQuery = async (keyword) => {
                 GROUP BY N.id 
                 ORDER BY N.createdAt DESC
                 `,
-                [`%${keyword}%`]
+                [idUser, idUser, idUser, `%${keyword}%`]
             );
         } else {
             [notices] = await connection.query(
                 `
-                SELECT N.id, N.title, U.name, N.text, N.intro, N.theme, N.image, N.createdAt, SUM(IFNULL(L.vote = 1, 0)) AS likes, SUM(IFNULL(L.vote = 0, 0)) AS dislikes 
+                SELECT N.id, N.idUser, N.title, U.name, N.text, N.intro, N.theme, N.image, N.createdAt, SUM(IFNULL(L.vote = 1, 0)) AS likes, SUM(IFNULL(L.vote = 0, 0)) AS dislikes,  N.idUser = ? AS owner, BIT_OR(L.idUser = ? AND L.vote = 1) AS likedByMe , BIT_OR(L.idUser = ? AND L.vote = 0) AS dislikedByMe 
                 FROM notices N
                 LEFT JOIN likes L
                 ON (N.id = L.idNotice)
@@ -40,10 +39,13 @@ const selectAllNoticesQuery = async (keyword) => {
                 ON N.idUser = U.id
                 GROUP BY N.id 
                 ORDER BY N.createdAt DESC
-                `
+                `,
+                [idUser, idUser, idUser]
             );
         }
 
+        // Para ordenar de manera descente por likes y dislikes se cambian las propiedades de las lineas
+        // 28 y linea 42 por esta propiedad: ORDER BY L.vote DESC.
         return notices;
     } finally {
         if (connection) {

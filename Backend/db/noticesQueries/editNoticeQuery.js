@@ -9,7 +9,7 @@ const editNoticeQuery = async (idNotice, title, intro, text, image, theme) => {
         // Actualizamos la Noticia.
         await connection.query(
             `UPDATE notices
-             SET title = ? intro = ? text = ? image = ? theme = ?
+             SET title = ? ,intro = ? ,text = ? ,image = ? ,theme = ?
              WHERE id = ?`,
             [title, intro, text, image, theme, idNotice]
         );

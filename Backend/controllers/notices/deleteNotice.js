@@ -12,7 +12,7 @@ const deleteNotice = async (req, res, next) => {
         const notice = await selectNotice(idNotice);
 
         // Verificamos que sea la misma persona.
-        if (req.idUser !== notice.idUser) {
+        if (req.idUser !== notice[0].idUser) {
             throw generateError(
                 'No puedes eliminar una noticia de otra persona.',
                 401

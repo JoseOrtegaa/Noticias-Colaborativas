@@ -10,7 +10,7 @@ const selectUserById = async (idUser) => {
 
         // Buscamos al usuario en la base de datos.
         const [user] = await connection.query(
-            `SELECT name, email, biography, image FROM users WHERE id = ?`,
+            `SELECT id, name, email, biography, image FROM users WHERE id = ?`,
             [idUser]
         );
 

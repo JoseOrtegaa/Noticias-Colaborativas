@@ -25,7 +25,7 @@ const selectNotice = async (idNotice) => {
             throw generateError('Esta noticia no existe', 404);
         }
 
-        return notices[0];
+        return notices;
     } finally {
         if (connection) connection.release();
     }
